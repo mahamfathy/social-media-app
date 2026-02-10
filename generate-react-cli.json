@@ -4,8 +4,8 @@
   "testLibrary": "None",
   "component": {
     "default": {
-      "path": "src/Components",
-      "withStyle": true,
+      "path": "src/Pages",
+      "withStyle": false,
       "withTest": false,
       "withStory": false,
       "withLazy": false
