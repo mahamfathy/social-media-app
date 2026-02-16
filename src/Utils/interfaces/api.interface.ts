@@ -6,6 +6,7 @@ export interface ApiResponse<T> {
   errors?: string | string[];
 }
 export interface Meta {
+  feedMode?: string;
   pagination: Pagination;
 }
 
