@@ -1,6 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { MainLayout } from "./Components/Layout/MainLayout";
-import { Login } from "./Pages/Login/Login";
+import Login from "./Pages/Login/Login";
 import NotFound from "./Pages/NotFound/NotFound";
 import PostDetails from "./Pages/PostDetails/PostDetails";
 import Posts from "./Pages/Posts/Posts";
