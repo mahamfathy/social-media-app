@@ -1,5 +1,5 @@
 import type { ApiResponse } from "../api.interface";
-import type { User } from "../post/user.interface";
+import type { User } from "../post/post-like.interface";
 
 export interface Auth {
   token: string;
