@@ -1,14 +1,13 @@
 import type { ApiResponse } from "../api.interface";
 import type { Comment } from "../comment/comment.interface";
-import type { Like } from "./post-likes.interface";
-import type { User } from "./user.interface";
+import type { User } from "./post-like.interface";
 
 export interface Post {
   _id: string;
   body?: string;
   privacy: string;
   image?: string;
-  user: User | string | Like;
+  user: User | string;
   sharedPost?: Post;
   likes: string[];
   createdAt: string;
