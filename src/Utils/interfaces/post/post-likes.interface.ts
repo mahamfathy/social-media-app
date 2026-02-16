@@ -1,4 +1,4 @@
-import type { ApiResponse } from "./api.interface";
+import type { ApiResponse } from "../api.interface";
 
 export interface Like {
   _id: string;
