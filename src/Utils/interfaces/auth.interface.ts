@@ -1,4 +1,5 @@
 import type { ApiResponse } from "./api.interface";
+import type { User } from "./user.interface";
 
 export interface Auth {
   token: string;
@@ -7,12 +8,4 @@ export interface Auth {
   user: User;
 }
 
-export interface User {
-  _id: string;
-  name: string;
-  username: string;
-  email: string;
-  photo: string;
-  cover: string;
-}
-export type AuthInterface = ApiResponse<Auth>;
+export type IAuth = ApiResponse<Auth>;
