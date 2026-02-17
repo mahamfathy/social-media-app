@@ -6,6 +6,7 @@ export const authSchema = z
       .string()
       .min(3, "Name must be at least 3 characters")
       .max(20)
+      .trim()
       .optional(),
     username: z
       .string()
@@ -15,7 +16,8 @@ export const authSchema = z
     email: z
       .string()
       .min(1, "Email is required")
-      .email("Please enter a valid email address"),
+      .email("Please enter a valid email address")
+      .trim(),
     password: z
       .string()
       .min(1, "Password is required")
