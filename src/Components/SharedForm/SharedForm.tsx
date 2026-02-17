@@ -10,6 +10,7 @@ import {
 } from "@/Components/ui/select";
 import { authSchema, type AuthSchema } from "@/Pages/Auth/Auth.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
 import {
   ArrowRight,
   Calendar,
@@ -41,7 +42,9 @@ export const SharedForm = ({ isLogin }: { isLogin: boolean }) => {
     reset,
     formState: { disabled, isDirty, isSubmitting, isValid, errors },
   } = methods;
-  const submitForm = (values: AuthSchema) => {};
+  const submitForm = async (values: AuthSchema) => {
+    const response = await axios.post();
+  };
   return (
     <>
       <form className="space-y-4" onSubmit={handleSubmit(submitForm)}>
