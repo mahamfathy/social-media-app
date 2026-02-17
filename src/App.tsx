@@ -1,12 +1,10 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { MainLayout } from "./Components/Layout/MainLayout";
-import { Button } from "./Components/ui/button";
-import Login from "./Pages/Login/Login";
+import { Auth } from "./Pages/Auth/Auth";
 import NotFound from "./Pages/NotFound/NotFound";
 import PostDetails from "./Pages/PostDetails/PostDetails";
 import Posts from "./Pages/Posts/Posts";
 import Profile from "./Pages/Profile/Profile";
-import SignUp from "./Pages/SignUp/SignUp";
 
 const App = () => {
   const routes = createBrowserRouter([
@@ -15,8 +13,8 @@ const App = () => {
       element: <MainLayout />,
       children: [
         { index: true, element: <Posts /> },
-        { path: "/login", element: <Login /> },
-        { path: "/sign-up", element: <SignUp /> },
+        { path: "/sign-in", element: <Auth /> },
+        { path: "/sign-up", element: <Auth /> },
         { path: "/profile", element: <Profile /> },
         { path: "/post-details/:id", element: <PostDetails /> },
       ],
@@ -26,12 +24,6 @@ const App = () => {
   return (
     <>
       <RouterProvider router={routes} />
-
-      <div className="flex min-h-svh flex-col items-center bg-red-50 justify-center">
-        <Button variant="link" className="bg-red-900">
-          Click me
-        </Button>
-      </div>
     </>
   );
 };
