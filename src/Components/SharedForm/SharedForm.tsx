@@ -1,5 +1,6 @@
 import { Input } from "@/Components/ui/input";
 import { Label } from "@/Components/ui/label";
+
 import {
   Select,
   SelectContent,
@@ -7,6 +8,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/Components/ui/select";
+import { authSchema, type AuthSchema } from "@/Pages/Auth/Auth.schema";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   ArrowRight,
   Calendar,
@@ -15,25 +18,61 @@ import {
   User,
   VenusAndMars,
 } from "lucide-react";
+import { useForm } from "react-hook-form";
 import { Button } from "../ui/button";
+
 export const SharedForm = ({ isLogin }: { isLogin: boolean }) => {
+  const methods = useForm({
+    mode: "onChange",
+    defaultValues: {
+      name: "",
+      username: "",
+      email: "",
+      dateOfBirth: "",
+      gender: "male",
+      password: "",
+      rePassword: "",
+    },
+    resolver: zodResolver(authSchema),
+  });
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { disabled, isDirty, isSubmitting, isValid, errors },
+  } = methods;
+  const submitForm = (values: AuthSchema) => {};
   return (
     <>
-      <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
+      <form className="space-y-4" onSubmit={handleSubmit(submitForm)}>
         {!isLogin && (
           <div className="space-y-2">
-            <Label htmlFor="fullname">Full Name</Label>
+            <Label htmlFor="name">Full Name</Label>
             <div className="relative">
               <User className="absolute left-3 top-3 size-4 text-gray-400" />
               <Input
-                id="fullname"
-                placeholder="John Doe"
+                {...register("name")}
+                id="name"
+                placeholder="Maha Fathy"
                 className="pl-10 h-11 rounded-xl bg-gray-50/50 border-gray-200 focus:bg-white"
               />
             </div>
           </div>
         )}
-
+        {!isLogin && (
+          <div className="space-y-2">
+            <Label htmlFor="username">Username</Label>
+            <div className="relative">
+              <User className="absolute left-3 top-3 size-4 text-gray-400" />
+              <Input
+                {...register("username")}
+                id="username"
+                placeholder="@maha123"
+                className="pl-10 h-11 rounded-xl bg-gray-50/50 border-gray-200 focus:bg-white"
+              />
+            </div>
+          </div>
+        )}
         <div className="space-y-2">
           <Label htmlFor="email">Email Address</Label>
           <div className="relative">
@@ -41,7 +80,8 @@ export const SharedForm = ({ isLogin }: { isLogin: boolean }) => {
             <Input
               id="email"
               type="email"
-              placeholder="name@example.com"
+              {...register("email")}
+              placeholder="mahafathyh@gmail.com"
               className="pl-10 h-11 rounded-xl bg-gray-50/50 border-gray-200 focus:bg-white"
             />
           </div>
@@ -52,9 +92,10 @@ export const SharedForm = ({ isLogin }: { isLogin: boolean }) => {
           <div className="relative">
             <Lock className="absolute left-3 top-3 size-4 text-gray-400" />
             <Input
+              {...register("password")}
               id="password"
               type="password"
-              placeholder="••••••••"
+              placeholder="Maha@123"
               className="pl-10 h-11 rounded-xl bg-gray-50/50 border-gray-200 focus:bg-white"
             />
           </div>
@@ -69,6 +110,7 @@ export const SharedForm = ({ isLogin }: { isLogin: boolean }) => {
                 <Input
                   id="rePassword"
                   type="password"
+                  {...register("rePassword")}
                   placeholder="Confirm your password"
                   className="pl-10 h-11 rounded-xl bg-gray-50/50 border-gray-200 focus:bg-white"
                 />
@@ -82,14 +124,15 @@ export const SharedForm = ({ isLogin }: { isLogin: boolean }) => {
                   <Calendar className="absolute left-3 top-3 size-4 text-gray-400" />
                   <Input
                     type="date"
+                    {...register("dateOfBirth")}
                     className="pl-10 rounded-xl bg-gray-50/50 border-gray-200 w-full"
                   />
                 </div>
               </div>
               <div className="space-y-2">
                 <Label>Gender</Label>
-                <Select>
-                  <SelectTrigger className="w-full  flex items-center justify-between rounded-xl bg-gray-50/50 border-blue-500  relative focus:ring-blue-500">
+                <Select {...register("gender")}>
+                  <SelectTrigger className="w-full  flex items-center justify-between rounded-xl bg-gray-50/50 border-gray-200  relative focus:ring-blue-500">
                     <VenusAndMars className="absolute left-3 top-3 size-4 text-gray-400" />
                     <SelectValue placeholder="Select" />
                   </SelectTrigger>
