@@ -1,5 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { MainLayout } from "./Components/Layout/MainLayout";
+import { Button } from "./Components/ui/button";
 import Login from "./Pages/Login/Login";
 import NotFound from "./Pages/NotFound/NotFound";
 import PostDetails from "./Pages/PostDetails/PostDetails";
@@ -17,7 +18,7 @@ const App = () => {
         { path: "/login", element: <Login /> },
         { path: "/sign-up", element: <SignUp /> },
         { path: "/profile", element: <Profile /> },
-        { path: "/post-details:id", element: <PostDetails /> },
+        { path: "/post-details/:id", element: <PostDetails /> },
       ],
     },
     { path: "*", element: <NotFound /> },
@@ -25,6 +26,12 @@ const App = () => {
   return (
     <>
       <RouterProvider router={routes} />
+
+      <div className="flex min-h-svh flex-col items-center bg-red-50 justify-center">
+        <Button variant="link" className="bg-red-900">
+          Click me
+        </Button>
+      </div>
     </>
   );
 };
