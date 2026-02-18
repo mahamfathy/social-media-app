@@ -196,7 +196,7 @@ export const SharedForm = ({ isLogin }: { isLogin: boolean }) => {
                       onValueChange={field.onChange}
                       defaultValue={field.value}
                     >
-                      <SelectTrigger className="pl-10 h-11 rounded-xl bg-gray-50/50 border-gray-200">
+                      <SelectTrigger className="w-full pl-10 h-11 rounded-xl bg-gray-50/50 border-gray-200">
                         <VenusAndMars className="absolute left-3 top-3 size-4 text-gray-400" />
                         <SelectValue placeholder="Select" />
                       </SelectTrigger>
