@@ -2,6 +2,7 @@ import { Toaster } from "react-hot-toast";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { MainLayout } from "./Components/Layout/MainLayout";
 import { AuthGuard } from "./Guards/AuthGuard/AuthGuard";
+import { PostsGuard } from "./Guards/PostsGuard/PostsGuard";
 import { Auth } from "./Pages/Auth/Auth";
 import NotFound from "./Pages/NotFound/NotFound";
 import PostDetails from "./Pages/PostDetails/PostDetails";
@@ -14,7 +15,14 @@ const App = () => {
       path: "",
       element: <MainLayout />,
       children: [
-        { index: true, element: <Posts /> },
+        {
+          index: true,
+          element: (
+            <PostsGuard>
+              <Posts />
+            </PostsGuard>
+          ),
+        },
         {
           path: "/sign-in",
           element: (
@@ -31,8 +39,22 @@ const App = () => {
             </AuthGuard>
           ),
         },
-        { path: "/profile", element: <Profile /> },
-        { path: "/post-details/:id", element: <PostDetails /> },
+        {
+          path: "/profile",
+          element: (
+            <PostsGuard>
+              <Profile />
+            </PostsGuard>
+          ),
+        },
+        {
+          path: "/post-details/:id",
+          element: (
+            <PostsGuard>
+              <PostDetails />{" "}
+            </PostsGuard>
+          ),
+        },
       ],
     },
     { path: "*", element: <NotFound /> },
