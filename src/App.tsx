@@ -1,3 +1,4 @@
+import { Toaster } from "react-hot-toast";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { MainLayout } from "./Components/Layout/MainLayout";
 import { Auth } from "./Pages/Auth/Auth";
@@ -23,6 +24,8 @@ const App = () => {
   ]);
   return (
     <>
+      <Toaster />
+
       <RouterProvider router={routes} />
     </>
   );
