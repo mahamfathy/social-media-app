@@ -1,20 +1,18 @@
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { Footer } from "../Footer/Footer";
 import Navbar from "../Navbar/Navbar";
 
 export const MainLayout = () => {
-  const location = useLocation();
+  const token = localStorage.getItem("token");
   return (
     <>
-      {location.pathname === "/sign-in" || location.pathname === "/sign-up" ? (
+      {token && <Navbar />}
+
+      <main>
         <Outlet />
-      ) : (
-        <>
-          <Navbar />
-          <Outlet />
-          <Footer />
-        </>
-      )}
+      </main>
+
+      {token && <Footer />}
     </>
   );
 };
