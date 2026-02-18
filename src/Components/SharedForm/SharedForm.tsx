@@ -61,16 +61,16 @@ export const SharedForm = ({ isLogin }: { isLogin: boolean }) => {
         if (data.data?.token) {
           localStorage.setItem("token", data.data?.token);
         }
-        setTimeout(() => {
-          if (isLogin) {
-            navigate("/");
-          } else {
-            navigate("/sign-in");
-          }
-        }, 500);
+        if (isLogin) {
+          navigate("/");
+        } else {
+          navigate("/sign-in");
+        }
       }
     } catch (error: any) {
       console.error("Submission error details:", error.response?.data);
+    } finally {
+      reset();
     }
   };
   return (
@@ -219,7 +219,7 @@ export const SharedForm = ({ isLogin }: { isLogin: boolean }) => {
         >
           {isSubmitting ? (
             <>
-              <span>Processing...</span>
+              <span>Processing</span>
               <Spinner className="size-5 text-white" />
             </>
           ) : (
