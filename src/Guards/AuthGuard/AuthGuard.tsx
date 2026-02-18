@@ -1,9 +1,7 @@
 import { type ReactNode } from "react";
 import { Navigate } from "react-router-dom";
-interface Children {
-  children: ReactNode;
-}
-export const AuthGuard = ({ children }: Children) => {
+
+export const AuthGuard = ({ children }: { children: ReactNode }) => {
   if (!localStorage.getItem("token")) {
     return children;
   } else {
