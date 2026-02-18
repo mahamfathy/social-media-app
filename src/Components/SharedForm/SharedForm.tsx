@@ -61,6 +61,8 @@ export const SharedForm = ({ isLogin }: { isLogin: boolean }) => {
         if (data.data?.token) {
           localStorage.setItem("token", data.data?.token);
         }
+        reset();
+
         if (isLogin) {
           navigate("/");
         } else {
@@ -69,8 +71,6 @@ export const SharedForm = ({ isLogin }: { isLogin: boolean }) => {
       }
     } catch (error: any) {
       console.error("Submission error details:", error.response?.data);
-    } finally {
-      reset();
     }
   };
   return (
@@ -230,7 +230,6 @@ export const SharedForm = ({ isLogin }: { isLogin: boolean }) => {
           )}
         </Button>
       </form>
-      {console.log("Form Errors:", errors)}
     </>
   );
 };
