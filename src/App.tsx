@@ -1,6 +1,7 @@
 import { Toaster } from "react-hot-toast";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { MainLayout } from "./Components/Layout/MainLayout";
+import { AuthGuard } from "./Guards/AuthGuard/AuthGuard";
 import { Auth } from "./Pages/Auth/Auth";
 import NotFound from "./Pages/NotFound/NotFound";
 import PostDetails from "./Pages/PostDetails/PostDetails";
@@ -14,8 +15,22 @@ const App = () => {
       element: <MainLayout />,
       children: [
         { index: true, element: <Posts /> },
-        { path: "/sign-in", element: <Auth /> },
-        { path: "/sign-up", element: <Auth /> },
+        {
+          path: "/sign-in",
+          element: (
+            <AuthGuard>
+              <Auth />
+            </AuthGuard>
+          ),
+        },
+        {
+          path: "/sign-up",
+          element: (
+            <AuthGuard>
+              <Auth />
+            </AuthGuard>
+          ),
+        },
         { path: "/profile", element: <Profile /> },
         { path: "/post-details/:id", element: <PostDetails /> },
       ],
