@@ -8,6 +8,7 @@ import {
 } from "@/Components/ui/card";
 
 import FeatureItem from "@/Components/FeatureItem/FeatureItem";
+import { Logo } from "@/Components/Logo/Logo";
 import { SharedForm } from "@/Components/SharedForm/SharedForm";
 import StatItem from "@/Components/StateItem/StateItem";
 import {
@@ -34,12 +35,7 @@ export const Auth = () => {
         }}
       >
         <header>
-          <div className="flex items-center gap-3">
-            <span className="size-10 md:size-12 text-lg font-bold flex justify-center items-center bg-white/40 border border-white/30 rounded-xl backdrop-blur-md">
-              S
-            </span>
-            <span className="text-2xl font-bold tracking-tight">SocialHub</span>
-          </div>
+          <Logo />
         </header>
 
         <div className="content space-y-7">
