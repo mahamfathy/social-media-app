@@ -1,7 +1,8 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "react-hot-toast";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { MainLayout } from "./Components/Layout/MainLayout";
-import { AuthContextProvider } from "./Context/AuthContext";
+import { AuthContextProvider } from "./Context/AuthContextProvider";
 import { AuthGuard } from "./Guards/AuthGuard/AuthGuard";
 import { PostsGuard } from "./Guards/PostsGuard/PostsGuard";
 import { Auth } from "./Pages/Auth/Auth";
@@ -59,13 +60,15 @@ const App = () => {
     },
     { path: "*", element: <NotFound /> },
   ]);
+  const queryClient = new QueryClient();
   return (
     <>
-      <AuthContextProvider>
-        <Toaster />
-
-        <RouterProvider router={routes} />
-      </AuthContextProvider>
+      <QueryClientProvider client={queryClient}>
+        <AuthContextProvider>
+          <Toaster />
+          <RouterProvider router={routes} />
+        </AuthContextProvider>
+      </QueryClientProvider>
     </>
   );
 };
