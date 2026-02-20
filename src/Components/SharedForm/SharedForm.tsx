@@ -19,6 +19,8 @@ import {
   User,
   VenusAndMars,
 } from "lucide-react";
+
+import { useAuth } from "@/Utils/custom-hooks/useAuthContext/useAuth";
 import { Controller, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
@@ -27,6 +29,8 @@ import { Spinner } from "../ui/spinner";
 
 export const SharedForm = ({ isLogin }: { isLogin: boolean }) => {
   const navigate = useNavigate();
+  const { setToken } = useAuth();
+
   const methods = useForm({
     mode: "onTouched",
     defaultValues: {
@@ -55,19 +59,12 @@ export const SharedForm = ({ isLogin }: { isLogin: boolean }) => {
 
     try {
       const { data } = await axiosInstance.post<IAuth>(endPoint, payload);
-
       if (data.message === "success" || data.data?.token) {
+        localStorage.setItem("token", data.data!.token);
+        setToken(data.data!.token);
         toast.success(data.message);
-        if (data.data?.token) {
-          localStorage.setItem("token", data.data?.token);
-        }
         reset();
-
-        if (isLogin) {
-          navigate("/");
-        } else {
-          navigate("/sign-in");
-        }
+        navigate(isLogin ? "/" : "/sign-in", { replace: true });
       }
     } catch (error: any) {
       console.error("Submission error details:", error.response?.data);
