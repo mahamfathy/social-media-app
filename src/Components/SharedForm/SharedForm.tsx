@@ -24,6 +24,7 @@ import { useAuth } from "@/Utils/custom-hooks/useAuthContext/useAuth";
 import { Controller, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { LoginLoader } from "../LoginLoader/LoginLoader";
 import { Button } from "../ui/button";
 import { Spinner } from "../ui/spinner";
 
@@ -80,6 +81,7 @@ export const SharedForm = ({ isLogin }: { isLogin: boolean }) => {
   };
   return (
     <>
+      {authMutation.isPending && <LoginLoader />}
       <form className="space-y-4" onSubmit={handleSubmit(submitForm)}>
         {!isLogin && (
           <div className="space-y-2">
@@ -224,7 +226,7 @@ export const SharedForm = ({ isLogin }: { isLogin: boolean }) => {
         >
           {authMutation.isPending ? (
             <>
-              <span>Processing</span>
+              <span>Please wait...</span>
               <Spinner className="size-5 text-white" />
             </>
           ) : (
