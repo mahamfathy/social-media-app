@@ -1,6 +1,7 @@
 import { Toaster } from "react-hot-toast";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { MainLayout } from "./Components/Layout/MainLayout";
+import { AuthContextProvider } from "./Context/AuthContext";
 import { AuthGuard } from "./Guards/AuthGuard/AuthGuard";
 import { PostsGuard } from "./Guards/PostsGuard/PostsGuard";
 import { Auth } from "./Pages/Auth/Auth";
@@ -8,7 +9,6 @@ import NotFound from "./Pages/NotFound/NotFound";
 import PostDetails from "./Pages/PostDetails/PostDetails";
 import Posts from "./Pages/Posts/Posts";
 import Profile from "./Pages/Profile/Profile";
-
 const App = () => {
   const routes = createBrowserRouter([
     {
@@ -61,9 +61,11 @@ const App = () => {
   ]);
   return (
     <>
-      <Toaster />
+      <AuthContextProvider>
+        <Toaster />
 
-      <RouterProvider router={routes} />
+        <RouterProvider router={routes} />
+      </AuthContextProvider>
     </>
   );
 };
