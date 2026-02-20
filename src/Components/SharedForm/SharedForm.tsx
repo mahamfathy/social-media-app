@@ -1,4 +1,3 @@
-import axiosInstance from "@/api/api.config";
 import { Input } from "@/Components/ui/input";
 import { Label } from "@/Components/ui/label";
 import {
@@ -9,8 +8,8 @@ import {
   SelectValue,
 } from "@/Components/ui/select";
 import { authSchema, type AuthSchema } from "@/Pages/Auth/Auth.schema";
-import type { IAuth } from "@/Utils/interfaces/auth/auth.interface";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
 import {
   ArrowRight,
   Calendar,
@@ -20,6 +19,7 @@ import {
   VenusAndMars,
 } from "lucide-react";
 
+import { AuthService } from "@/services/auth.service";
 import { useAuth } from "@/Utils/custom-hooks/useAuthContext/useAuth";
 import { Controller, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -30,7 +30,6 @@ import { Spinner } from "../ui/spinner";
 export const SharedForm = ({ isLogin }: { isLogin: boolean }) => {
   const navigate = useNavigate();
   const { setToken } = useAuth();
-
   const methods = useForm({
     mode: "onTouched",
     defaultValues: {
@@ -49,16 +48,19 @@ export const SharedForm = ({ isLogin }: { isLogin: boolean }) => {
     handleSubmit,
     control,
     reset,
-    formState: { isSubmitting, isValid, errors },
+    formState: { isValid, errors },
   } = methods;
-  const submitForm = async (values: AuthSchema) => {
-    const endPoint = isLogin ? "/users/signin" : "/users/signup";
-    const payload = isLogin
-      ? { email: values.email, password: values.password }
-      : values;
-
-    try {
-      const { data } = await axiosInstance.post<IAuth>(endPoint, payload);
+  const authMutation = useMutation({
+    mutationFn: (values: AuthSchema) => {
+      if (isLogin) {
+        return AuthService.login({
+          email: values.email,
+          password: values.password,
+        });
+      }
+      return AuthService.register(values);
+    },
+    onSuccess: (data) => {
       if (data.message === "success" || data.data?.token) {
         localStorage.setItem("token", data.data!.token);
         setToken(data.data!.token);
@@ -66,9 +68,15 @@ export const SharedForm = ({ isLogin }: { isLogin: boolean }) => {
         reset();
         navigate(isLogin ? "/" : "/sign-in", { replace: true });
       }
-    } catch (error: any) {
-      console.error("Submission error details:", error.response?.data);
-    }
+    },
+    onError: (error: any) => {
+      const msg = error.response?.data?.message;
+      toast.error(msg);
+      console.error("Error:", error);
+    },
+  });
+  const submitForm = (values: AuthSchema) => {
+    authMutation.mutate(values);
   };
   return (
     <>
@@ -211,10 +219,10 @@ export const SharedForm = ({ isLogin }: { isLogin: boolean }) => {
 
         <Button
           type="submit"
-          disabled={isSubmitting || !isValid}
+          disabled={authMutation.isPending || !isValid}
           className="w-full h-12 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-lg transition-all gap-2 mt-4 text-base disabled:opacity-70 disabled:cursor-not-allowed"
         >
-          {isSubmitting ? (
+          {authMutation.isPending ? (
             <>
               <span>Processing</span>
               <Spinner className="size-5 text-white" />
