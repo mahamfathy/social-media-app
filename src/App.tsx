@@ -1,14 +1,20 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "react-hot-toast";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  Navigate,
+  RouterProvider,
+} from "react-router-dom";
 import { MainLayout } from "./Components/Layout/MainLayout";
 import { AuthContextProvider } from "./Context/AuthContextProvider";
 import { AuthGuard } from "./Guards/AuthGuard/AuthGuard";
 import { PostsGuard } from "./Guards/PostsGuard/PostsGuard";
 import { Auth } from "./Pages/Auth/Auth";
+import ChangePassword from "./Pages/ChangePassword/ChangePassword";
+import Feed from "./Pages/Feed/Feed";
 import NotFound from "./Pages/NotFound/NotFound";
+import Notifications from "./Pages/Notifications/Notifications";
 import PostDetails from "./Pages/PostDetails/PostDetails";
-import Posts from "./Pages/Posts/Posts";
 import Profile from "./Pages/Profile/Profile";
 const App = () => {
   const routes = createBrowserRouter([
@@ -20,10 +26,22 @@ const App = () => {
           index: true,
           element: (
             <PostsGuard>
-              <Posts />
+              <Navigate to="/feed" />
+              <Feed />
             </PostsGuard>
           ),
         },
+        {
+          path: "/feed",
+          element: (
+            <PostsGuard>
+              <Feed />
+            </PostsGuard>
+          ),
+        },
+        { path: "/settings", element: <ChangePassword /> },
+
+        { path: "/notifications", element: <Notifications /> },
         {
           path: "/sign-in",
           element: (
