@@ -1,4 +1,4 @@
-import { useAuth } from "@/Utils/custom-hooks/useAuthContext/useAuth";
+import { useAuth } from "@/Utils/custom-hooks/useAuth/useAuth";
 import { Outlet } from "react-router-dom";
 import { Footer } from "../Footer/Footer";
 import Navbar from "../Navbar/Navbar";
