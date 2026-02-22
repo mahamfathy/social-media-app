@@ -20,7 +20,7 @@ import {
 } from "lucide-react";
 
 import { AuthService } from "@/services/auth.service";
-import { useAuth } from "@/Utils/custom-hooks/useAuthContext/useAuth";
+import { useAuth } from "@/Utils/custom-hooks/useAuth/useAuth";
 import { Controller, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
