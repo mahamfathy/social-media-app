@@ -40,7 +40,7 @@ const App = () => {
           ),
         },
         { path: "/settings", element: <ChangePassword /> },
-
+        { path: "/profile", element: <Profile /> },
         { path: "/notifications", element: <Notifications /> },
         {
           path: "/sign-in",
