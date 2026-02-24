@@ -22,4 +22,10 @@ export const postsService = {
     );
     return data;
   },
+  getUserPosts: async (userId: string) => {
+    const { data } = await axiosInstance.get(
+      `/users/${userId}/posts?page=1&limit=20`,
+    );
+    return data;
+  },
 };
