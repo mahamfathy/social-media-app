@@ -8,4 +8,12 @@ export const postsService = {
     );
     return data;
   },
+  getCommunityPosts: async () => {
+    const { data } = await axiosInstance.get<IPost>("/posts");
+    return data;
+  },
+  addPost: async (formData: FormData) => {
+    const { data } = await axiosInstance.post("/posts", formData);
+    return data;
+  },
 };
