@@ -16,4 +16,10 @@ export const postsService = {
     const { data } = await axiosInstance.post("/posts", formData);
     return data;
   },
+  getSavedPosts: async () => {
+    const { data } = await axiosInstance.get(
+      "/users/bookmarks?limit=20&page=1",
+    );
+    return data;
+  },
 };
