@@ -1,0 +1,176 @@
+import type { Post } from "@/Utils/interfaces/post/post.interface";
+import { Link } from "react-router-dom";
+
+const SinglePost = ({ post }: { post: Post }) => {
+  return (
+    <article className="overflow-visible rounded-xl border border-slate-200 bg-white shadow-sm">
+      <div className="p-4">
+        <div className="flex items-center gap-3">
+          <Link className="shrink-0" to={`/profile/${post.user._id}`}>
+            <img
+              alt={post.user.name}
+              className="h-11 w-11 rounded-full object-cover"
+              src={
+                post.user.photo ||
+                "https://pub-3cba56bacf9f4965bbb0989e07dada12.r2.dev/linkedPosts/default-profile.png"
+              }
+            />
+          </Link>
+
+          <div className="min-w-0 flex-1">
+            <Link
+              className="block truncate text-sm font-bold text-slate-900 hover:underline"
+              to={`/profile/${post.user._id}`}
+            >
+              {post.user.name}
+            </Link>
+            <div className="flex items-center gap-1 text-xs text-slate-500">
+              <span>{post.createdAt}</span>
+              <span className="mx-0.5">·</span>
+
+              <div className="flex items-center gap-1">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width={11}
+                  height={11}
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="lucide lucide-earth"
+                >
+                  <path d="M21.54 15H17a2 2 0 0 0-2 2v4.54" />
+                  <path d="M7 3.34V5a3 3 0 0 0 3 3a2 2 0 0 1 2 2c0 1.1.9 2 2 2a2 2 0 0 0 2-2c0-1.1.9-2 2-2h3.17" />
+                  <path d="M11 21.95V18a2 2 0 0 0-2-2a2 2 0 0 1-2-2v-1a2 2 0 0 0-2-2H2.05" />
+                  <circle cx={12} cy={12} r={10} />
+                </svg>
+                <span className="capitalize">{post.privacy}</span>
+              </div>
+            </div>
+          </div>
+
+          <button className="rounded-full p-1.5 text-slate-500 hover:bg-slate-100">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width={18}
+              height={18}
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="lucide lucide-ellipsis"
+            >
+              <circle cx={12} cy={12} r={1} />
+              <circle cx={19} cy={12} r={1} />
+              <circle cx={5} cy={12} r={1} />
+            </svg>
+          </button>
+        </div>
+
+        <div className="mt-3">
+          <p className="whitespace-pre-wrap text-sm leading-relaxed text-slate-800">
+            {post.body}
+          </p>
+        </div>
+      </div>
+
+      {post.image && (
+        <div className="max-h-155 overflow-hidden border-y border-slate-200 bg-slate-50">
+          <button
+            type="button"
+            className="group relative block w-full cursor-zoom-in"
+          >
+            <img
+              alt="post content"
+              className="mx-auto max-h-125 w-auto object-contain"
+              src={post.image}
+            />
+            <span className="pointer-events-none absolute inset-0 bg-black/0 transition group-hover:bg-black/5" />
+          </button>
+        </div>
+      )}
+
+      <div className="px-4 py-3">
+        <div className="flex items-center justify-between text-xs text-slate-500 sm:text-sm">
+          <div className="flex items-center gap-1.5">
+            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#1877f2] text-white">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width={10}
+                height={10}
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3" />
+              </svg>
+            </span>
+            <span className="font-medium">{post.likesCount} likes</span>
+          </div>
+          <div className="flex gap-3">
+            <span>{post.commentsCount} comments</span>
+            <span>{post.sharesCount} shares</span>
+          </div>
+        </div>
+
+        <div className="mt-3 grid grid-cols-3 border-t border-slate-100 pt-1">
+          <button className="flex items-center justify-center gap-2 rounded-md py-2 text-sm font-semibold text-slate-600 hover:bg-slate-50">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width={18}
+              height={18}
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3" />
+            </svg>
+            Like
+          </button>
+          <button className="flex items-center justify-center gap-2 rounded-md py-2 text-sm font-semibold text-slate-600 hover:bg-slate-50">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width={18}
+              height={18}
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+            </svg>
+            Comment
+          </button>
+          <button className="flex items-center justify-center gap-2 rounded-md py-2 text-sm font-semibold text-slate-600 hover:bg-slate-50">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width={18}
+              height={18}
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
+              <polyline points="16 6 12 2 8 6" />
+              <line x1="12" x2="12" y1="2" y2="15" />
+            </svg>
+            Share
+          </button>
+        </div>
+      </div>
+    </article>
+  );
+};
+
+export default SinglePost;
