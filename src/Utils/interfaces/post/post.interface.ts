@@ -7,7 +7,7 @@ export interface Post {
   body?: string;
   privacy: string;
   image?: string;
-  user: User | string;
+  user: User;
   sharedPost?: Post;
   likes: string[];
   createdAt: string;
@@ -20,4 +20,4 @@ export interface Post {
   bookmarked?: boolean;
 }
 
-export type IPost = ApiResponse<Post[]>;
+export type IPost = ApiResponse<{ posts: Post[] }>;
