@@ -3,7 +3,7 @@ import toast from "react-hot-toast";
 
 const axiosInstance = axios.create({
   baseURL: "https://route-posts.routemisr.com",
-  timeout: 5000,
+  timeout: 10000,
 });
 
 axiosInstance.interceptors.request.use(
