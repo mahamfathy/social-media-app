@@ -8,10 +8,11 @@ export const MainLayout = () => {
   return (
     <>
       {token && <Navbar />}
-
-      <main>
-        <Outlet />
-      </main>
+      <div className="mx-auto max-w-7xl px-3 py-3.5">
+        <main className="min-w-0">
+          <Outlet />
+        </main>
+      </div>
 
       {token && <Footer />}
     </>
