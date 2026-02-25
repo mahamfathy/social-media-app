@@ -2,9 +2,9 @@ import axiosInstance from "@/api/api.config";
 import type { IPost } from "@/Utils/interfaces/post/post.interface";
 
 export const postsService = {
-  getFeed: async () => {
+  getFeed: async (type: string) => {
     const { data } = await axiosInstance.get<IPost>(
-      "/posts/feed?only=following&limit=10",
+      `/posts/feed?only=${type}&limit=10`,
     );
     return data;
   },
