@@ -1,7 +1,7 @@
 import axiosInstance from "@/api/api.config";
-import type { AuthSchema } from "@/Pages/Auth/Auth.schema";
 import type { IAuth } from "@/Utils/interfaces/auth/auth.interface";
 import type { IUserData } from "@/Utils/interfaces/user/user-data.interface";
+import type { AuthSchema } from "@/Utils/schemas/Auth/Auth.schema";
 export const AuthService = {
   login: async (values: Pick<AuthSchema, "email" | "password">) => {
     const { data } = await axiosInstance.post<IAuth>("/users/signin", values);

@@ -7,7 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/Components/ui/select";
-import { authSchema, type AuthSchema } from "@/Pages/Auth/Auth.schema";
+import { authSchema, type AuthSchema } from "@/Utils/schemas/Auth/Auth.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import {
