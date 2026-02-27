@@ -111,8 +111,32 @@ const SinglePost = ({ post }: { post: Post }) => {
             <span className="font-medium">{post.likesCount} likes</span>
           </div>
           <div className="flex gap-3">
+            <span className="flex items-center gap-1">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="13"
+                height="13"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="lucide lucide-repeat2 lucide-repeat-2"
+                aria-hidden="true"
+              >
+                <path d="m2 9 3-3 3 3"></path>
+                <path d="M13 18H7a2 2 0 0 1-2-2V6"></path>
+                <path d="m22 15-3 3-3-3"></path>
+                <path d="M11 6h6a2 2 0 0 1 2 2v10"></path>
+              </svg>
+              {post.sharesCount} shares
+            </span>
             <span>{post.commentsCount} comments</span>
-            <span>{post.sharesCount} shares</span>
+
+            <button className="rounded-md px-2 py-1 text-xs font-bold text-[#1877f2] hover:bg-[#e7f3ff]">
+              View details
+            </button>
           </div>
         </div>
 
