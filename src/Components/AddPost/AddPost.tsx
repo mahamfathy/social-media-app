@@ -1,4 +1,4 @@
-import { postsService } from "@/services/posts.service";
+import { PostService } from "@/services/Post.service";
 import { useCustomForm } from "@/Utils/custom-hooks/useCustomForm/useCustomForm";
 import { postSchema, type PostSchema } from "@/Utils/schemas/Post/Post.schema";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -32,14 +32,14 @@ const AddPost = ({
     formData.append("privacy", values.privacy);
     if (values.image && values.image.length > 0)
       formData.append("image", values.image[0]);
-    return await postsService.addPost(formData);
+    return await PostService.addPost(formData);
   };
 
   const queryClient = useQueryClient();
   const { mutate, isPending } = useMutation({
     mutationFn: addPost,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["feedPosts"] });
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
       toast.success("Post created successfully! 🎉");
       reset();
       setShowEmoji(false);
