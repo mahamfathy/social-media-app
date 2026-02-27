@@ -1,11 +1,11 @@
-import { postsService } from "@/services/posts.service";
+import { PostService } from "@/services/Post.service";
 import { useQuery } from "@tanstack/react-query";
 
 export const useSavedPosts = (enabled: boolean) => {
   return useQuery({
     queryKey: ["savedPosts"],
     queryFn: () => {
-      return postsService.getSavedPosts();
+      return PostService.getSavedPosts();
     },
     enabled: enabled,
   });
