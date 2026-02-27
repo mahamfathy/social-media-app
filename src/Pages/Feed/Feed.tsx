@@ -1,6 +1,7 @@
 import AddPost from "@/Components/AddPost/AddPost";
 import PostSkeleton from "@/Components/PostSkeleton/PostSkeleton";
 import SinglePost from "@/Components/SinglePost/SinglePost";
+import { PostService } from "@/services/Post.service";
 import { useAuth } from "@/Utils/custom-hooks/useAuth/useAuth";
 import { usePost } from "@/Utils/custom-hooks/usePost/usePost";
 import type { Post } from "@/Utils/interfaces/post/post.interface";
@@ -11,9 +12,24 @@ type PostTab = "feed" | "community" | "saved" | "my posts";
 const Feed = () => {
   const { userData } = useAuth();
   const [activeTab, setActiveTab] = useState<PostTab>("feed");
-
-  const { data, isLoading } = usePost(activeTab, userData?.data?.user._id);
-
+  const myId = userData?.data?.user?._id;
+  const getFetchFn = () => {
+    switch (activeTab) {
+      case "community":
+        return () => PostService.getFeed("all");
+      case "my posts":
+        return () => PostService.getFeed("me");
+      case "saved":
+        return () => PostService.getSavedPosts();
+      default:
+        return () => PostService.getFeed("following");
+    }
+  };
+  const { data, isLoading } = usePost(
+    ["posts", activeTab],
+    getFetchFn(),
+    !!myId,
+  );
   const posts = data?.data?.posts || data?.data?.bookmarks || [];
 
   const getTabClass = (tab: PostTab) =>
@@ -228,7 +244,7 @@ const Feed = () => {
               </>
             ) : posts.length > 0 ? (
               posts.map((post: Post) => (
-                <SinglePost key={post._id} post={post} />
+                <SinglePost key={post._id} post={post} activeTab={activeTab} />
               ))
             ) : (
               <div className="text-center py-10 text-slate-400">
