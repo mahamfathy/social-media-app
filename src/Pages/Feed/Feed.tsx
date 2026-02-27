@@ -25,7 +25,7 @@ const Feed = () => {
 
   return (
     <>
-      <div className="grid gap-4 xl:grid-cols-[240px_minmax(0,1fr)_300px]">
+      <div className="mx-auto max-w-7xl px-3 py-3.5 grid gap-4 xl:grid-cols-[240px_minmax(0,1fr)_300px]">
         <aside className="hidden h-fit space-y-3 xl:sticky xl:top-21 xl:block">
           <div className="rounded-2xl border border-slate-200 bg-white p-3 shadow-sm">
             <button
