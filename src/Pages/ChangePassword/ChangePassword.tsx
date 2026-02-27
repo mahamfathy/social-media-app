@@ -1,4 +1,4 @@
-import { AuthService } from "@/services/auth.service";
+import { AuthService } from "@/services/Auth.service";
 import { useAuth } from "@/Utils/custom-hooks/useAuth/useAuth";
 import {
   changePasswordSchema,
