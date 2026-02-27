@@ -39,4 +39,9 @@ export const postsService = {
     const { data } = await axiosInstance.put(`/posts/${postId}`, values);
     return data;
   },
+
+  toggleLike: async (postId: string) => {
+    const { data } = await axiosInstance.put(`/posts/${postId}/like`);
+    return data;
+  },
 };
