@@ -8,7 +8,7 @@ export const MainLayout = () => {
   return (
     <>
       {token && <Navbar />}
-      <div className="mx-auto max-w-7xl px-3 py-3.5">
+      <div className="bg-[#f0f2f5]">
         <main className="min-w-0">
           <Outlet />
         </main>
