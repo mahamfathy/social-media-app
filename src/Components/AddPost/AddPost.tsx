@@ -1,15 +1,13 @@
 import { postsService } from "@/services/posts.service";
+import { useCustomForm } from "@/Utils/custom-hooks/useCustomForm/useCustomForm";
+import {
+  addPostSchema,
+  type AddPostSchema,
+} from "@/Utils/schemas/AddPost/AddPost.schema";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import EmojiPicker, { type EmojiClickData } from "emoji-picker-react";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-
-interface IPostForm {
-  body: string;
-  image: FileList | null;
-  privacy: "public" | "following" | "only_me";
-}
 
 const AddPost = ({
   name,
@@ -18,11 +16,11 @@ const AddPost = ({
   name: string | null;
   photo: string | null;
 }) => {
-  const { register, reset, watch, handleSubmit, setValue } = useForm<IPostForm>(
-    {
+  const { register, reset, watch, handleSubmit, setValue } =
+    useCustomForm<AddPostSchema>({
+      schema: addPostSchema,
       defaultValues: { body: "", image: null, privacy: "public" },
-    },
-  );
+    });
 
   const [showEmoji, setShowEmoji] = useState<boolean>(false);
   const bodyText = watch("body") || "";
@@ -31,7 +29,7 @@ const AddPost = ({
     setValue("body", bodyText + emojiData.emoji);
   };
 
-  const addPost = async (values: IPostForm) => {
+  const addPost = async (values: AddPostSchema) => {
     const formData = new FormData();
     formData.append("body", values.body);
     formData.append("privacy", values.privacy);
@@ -49,10 +47,9 @@ const AddPost = ({
       reset();
       setShowEmoji(false);
     },
-    onError: (error: unknown) => {},
   });
 
-  const onSubmit = (data: IPostForm) => {
+  const onSubmit = (data: AddPostSchema) => {
     mutate(data);
   };
 
@@ -64,8 +61,8 @@ const AddPost = ({
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="mb-3 flex items-start gap-3">
           <img
-            src={photo || defaultAvatar} // حل مشكلة الـ null في src
-            alt={name || "user"} // حل مشكلة الـ null في alt
+            src={photo || defaultAvatar}
+            alt={name || "user"}
             className="h-11 w-11 rounded-full object-cover"
           />
           <div className="flex-1">
