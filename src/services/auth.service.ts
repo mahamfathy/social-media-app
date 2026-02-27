@@ -15,4 +15,14 @@ export const AuthService = {
     const { data } = await axiosInstance.get<IUserData>("/users/profile-data");
     return data;
   },
+  changePassword: async (passwords: {
+    password: string;
+    newPassword: string;
+  }) => {
+    const { data } = await axiosInstance.patch(
+      `/users/change-password`,
+      passwords,
+    );
+    return data;
+  },
 };
