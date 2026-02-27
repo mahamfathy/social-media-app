@@ -8,4 +8,8 @@ export const ProfileService = {
     );
     return data;
   },
+  followUnfollowProfile: async (userId: string) => {
+    const { data } = await axiosInstance.put(`/users/${userId}/follow`, {});
+    return data;
+  },
 };
