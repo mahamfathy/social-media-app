@@ -70,11 +70,6 @@ export const SharedForm = ({ isLogin }: { isLogin: boolean }) => {
         navigate(isLogin ? "/" : "/sign-in", { replace: true });
       }
     },
-    onError: (error: any) => {
-      const msg = error.response?.data?.message;
-      toast.error(msg);
-      console.error("Error:", error);
-    },
   });
   const submitForm = (values: AuthSchema) => {
     authMutation.mutate(values);
