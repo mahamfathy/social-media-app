@@ -1,5 +1,6 @@
 import axiosInstance from "@/api/api.config";
 import type { IPost } from "@/Utils/interfaces/post/post.interface";
+import type { PostSchema } from "@/Utils/schemas/Post/Post.schema";
 
 export const postsService = {
   getFeed: async (type: string) => {
@@ -31,6 +32,11 @@ export const postsService = {
 
   deletePost: async (postId: string) => {
     const { data } = await axiosInstance.delete(`/posts/${postId}`);
+    return data;
+  },
+
+  updatePost: async (postId: string, values: PostSchema) => {
+    const { data } = await axiosInstance.put(`/posts/${postId}`, values);
     return data;
   },
 };
