@@ -8,7 +8,6 @@ import {
   SelectValue,
 } from "@/Components/ui/select";
 import { authSchema, type AuthSchema } from "@/Utils/schemas/Auth/Auth.schema";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import {
   ArrowRight,
@@ -21,7 +20,8 @@ import {
 
 import { AuthService } from "@/services/auth.service";
 import { useAuth } from "@/Utils/custom-hooks/useAuth/useAuth";
-import { Controller, useForm } from "react-hook-form";
+import { useCustomForm } from "@/Utils/custom-hooks/useCustomForm/useCustomForm";
+import { Controller } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { LoginLoader } from "../LoginLoader/LoginLoader";
@@ -31,8 +31,14 @@ import { Spinner } from "../ui/spinner";
 export const SharedForm = ({ isLogin }: { isLogin: boolean }) => {
   const navigate = useNavigate();
   const { setToken } = useAuth();
-  const methods = useForm({
-    mode: "onTouched",
+  const {
+    register,
+    handleSubmit,
+    reset,
+    control,
+    formState: { isValid, errors },
+  } = useCustomForm({
+    schema: authSchema,
     defaultValues: {
       name: "",
       username: "",
@@ -42,15 +48,7 @@ export const SharedForm = ({ isLogin }: { isLogin: boolean }) => {
       password: "",
       rePassword: "",
     },
-    resolver: zodResolver(authSchema),
   });
-  const {
-    register,
-    handleSubmit,
-    control,
-    reset,
-    formState: { isValid, errors },
-  } = methods;
   const authMutation = useMutation({
     mutationFn: (values: AuthSchema) => {
       if (isLogin) {
