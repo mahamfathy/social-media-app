@@ -1,9 +1,6 @@
 import { postsService } from "@/services/posts.service";
 import { useCustomForm } from "@/Utils/custom-hooks/useCustomForm/useCustomForm";
-import {
-  addPostSchema,
-  type AddPostSchema,
-} from "@/Utils/schemas/AddPost/AddPost.schema";
+import { postSchema, type PostSchema } from "@/Utils/schemas/Post/Post.schema";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import EmojiPicker, { type EmojiClickData } from "emoji-picker-react";
 import { useState } from "react";
@@ -17,8 +14,8 @@ const AddPost = ({
   photo: string | null;
 }) => {
   const { register, reset, watch, handleSubmit, setValue } =
-    useCustomForm<AddPostSchema>({
-      schema: addPostSchema,
+    useCustomForm<PostSchema>({
+      schema: postSchema,
       defaultValues: { body: "", image: null, privacy: "public" },
     });
 
@@ -29,7 +26,7 @@ const AddPost = ({
     setValue("body", bodyText + emojiData.emoji);
   };
 
-  const addPost = async (values: AddPostSchema) => {
+  const addPost = async (values: PostSchema) => {
     const formData = new FormData();
     formData.append("body", values.body);
     formData.append("privacy", values.privacy);
@@ -49,7 +46,7 @@ const AddPost = ({
     },
   });
 
-  const onSubmit = (data: AddPostSchema) => {
+  const onSubmit = (data: PostSchema) => {
     mutate(data);
   };
 
