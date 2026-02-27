@@ -11,7 +11,7 @@ export const authSchema = z
     password: z
       .string()
       .min(1, "Password is required")
-      .min(3, "Password must be at least 8 Char")
+      .min(8, "Password must be at least 8 Char")
       .regex(
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
         "Password must has at least 1 small letter, capital letter, a number and a symbol ",
