@@ -1,7 +1,17 @@
+import { useAuth } from "@/Utils/custom-hooks/useAuth/useAuth";
 import type { Post } from "@/Utils/interfaces/post/post.interface";
+import { Bookmark, MoreHorizontal, Pencil, Trash2 } from "lucide-react";
 import { Link } from "react-router-dom";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
 
 const SinglePost = ({ post }: { post: Post }) => {
+  const { userData } = useAuth();
+  const myPost = userData?.data?.user._id === post.user._id;
   return (
     <article className="overflow-visible rounded-xl border border-slate-200 bg-white shadow-sm">
       <div className="p-4">
@@ -51,24 +61,36 @@ const SinglePost = ({ post }: { post: Post }) => {
             </div>
           </div>
 
-          <button className="rounded-full p-1.5 text-slate-500 hover:bg-slate-100">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width={18}
-              height={18}
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={2}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="lucide lucide-ellipsis"
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="rounded-full p-1.5 text-slate-500 hover:bg-slate-100 outline-none">
+                <MoreHorizontal size={18} />
+              </button>
+            </DropdownMenuTrigger>
+
+            <DropdownMenuContent
+              align="end"
+              className="w-44 rounded-xl shadow-lg border-slate-200"
             >
-              <circle cx={12} cy={12} r={1} />
-              <circle cx={19} cy={12} r={1} />
-              <circle cx={5} cy={12} r={1} />
-            </svg>
-          </button>
+              <DropdownMenuItem className="flex items-center gap-2 px-3 py-2 font-semibold text-slate-700 cursor-pointer">
+                <Bookmark size={15} />
+                Save post
+              </DropdownMenuItem>
+              {myPost && (
+                <>
+                  <DropdownMenuItem className="flex items-center gap-2 px-3 py-2 font-semibold text-slate-700 cursor-pointer">
+                    <Pencil size={15} />
+                    Edit post
+                  </DropdownMenuItem>
+
+                  <DropdownMenuItem className="flex items-center gap-2 px-3 py-2 font-semibold text-rose-600 cursor-pointer focus:text-rose-600 focus:bg-rose-50">
+                    <Trash2 size={15} className="text-rose-600" />
+                    Delete post
+                  </DropdownMenuItem>
+                </>
+              )}
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
 
         <div className="mt-3">
