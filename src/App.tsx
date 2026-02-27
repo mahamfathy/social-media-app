@@ -39,9 +39,30 @@ const App = () => {
             </PostsGuard>
           ),
         },
-        { path: "/settings", element: <ChangePassword /> },
-        { path: "/profile", element: <Profile /> },
-        { path: "/notifications", element: <Notifications /> },
+        {
+          path: "/settings",
+          element: (
+            <PostsGuard>
+              <ChangePassword />
+            </PostsGuard>
+          ),
+        },
+        {
+          path: "/profile",
+          element: (
+            <PostsGuard>
+              <Profile />
+            </PostsGuard>
+          ),
+        },
+        {
+          path: "/notifications",
+          element: (
+            <PostsGuard>
+              <Notifications />
+            </PostsGuard>
+          ),
+        },
         {
           path: "/sign-in",
           element: (
