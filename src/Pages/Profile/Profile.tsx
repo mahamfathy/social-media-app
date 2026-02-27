@@ -1,8 +1,10 @@
 import SinglePost from "@/Components/SinglePost/SinglePost";
+import { PostService } from "@/services/Post.service";
 import { useAuth } from "@/Utils/custom-hooks/useAuth/useAuth";
 import { usePost } from "@/Utils/custom-hooks/usePost/usePost";
 import { useProfile } from "@/Utils/custom-hooks/useProfile/useProfile";
 import { useSavedPosts } from "@/Utils/custom-hooks/useSavedPosts/useSavedPosts";
+import type { Post } from "@/Utils/interfaces/post/post.interface";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 
@@ -15,8 +17,9 @@ const Profile = () => {
   const currentUser = id ? profileData?.data?.user : myProfile?.data?.user;
 
   const { data: postsData, isLoading: postsLoading } = usePost(
-    id ? "user-profile" : "my posts",
-    id,
+    ["posts", id ? "user-profile" : "me", id],
+    id ? () => PostService.getUserPosts(id) : () => PostService.getFeed("me"),
+    Boolean(currentUser),
   );
 
   const { data: savedData, isLoading: savedLoading } = useSavedPosts(!id);
@@ -395,8 +398,8 @@ const Profile = () => {
                 Loading posts...
               </div>
             ) : currentPosts.length > 0 ? (
-              currentPosts.map((post: any) => (
-                <SinglePost key={post._id} post={post} />
+              currentPosts.map((post: Post) => (
+                <SinglePost key={post._id} post={post} activeTab={""} />
               ))
             ) : (
               <div className="p-10 text-center bg-white rounded-2xl border border-dashed text-slate-400">
