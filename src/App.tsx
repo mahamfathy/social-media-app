@@ -67,10 +67,18 @@ const App = () => {
           ),
         },
         {
+          path: "/profile/:id",
+          element: (
+            <PostsGuard>
+              <Profile />
+            </PostsGuard>
+          ),
+        },
+        {
           path: "/post-details/:id",
           element: (
             <PostsGuard>
-              <PostDetails />{" "}
+              <PostDetails />
             </PostsGuard>
           ),
         },
