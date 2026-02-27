@@ -2,7 +2,7 @@ import axiosInstance from "@/api/api.config";
 import type { IPost } from "@/Utils/interfaces/post/post.interface";
 import type { PostSchema } from "@/Utils/schemas/Post/Post.schema";
 
-export const postsService = {
+export const PostService = {
   getFeed: async (type: string) => {
     const { data } = await axiosInstance.get<IPost>(
       `/posts/feed?only=${type}&limit=10`,
