@@ -28,4 +28,9 @@ export const postsService = {
     );
     return data;
   },
+
+  deletePost: async (postId: string) => {
+    const { data } = await axiosInstance.delete(`/posts/${postId}`);
+    return data;
+  },
 };
