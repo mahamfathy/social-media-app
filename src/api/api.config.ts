@@ -10,27 +10,34 @@ axiosInstance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
     if (token) {
-      config.headers.token = `${token}`;
+      config.headers.token = token;
     }
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  },
+  (error) => Promise.reject(error),
 );
-
 axiosInstance.interceptors.response.use(
-  (response) => {
-    return response;
-  },
+  (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
-      toast.error(error.response?.data?.message);
-      localStorage.removeItem("token");
+    const status = error.response?.status;
+    const message = error.response?.data?.message || "Something went wrong";
+    const url = error.config.url;
+
+    if (status === 401) {
+      const isAuthRequest =
+        url.includes("/signin") ||
+        url.includes("/signup") ||
+        url.includes("/change-password");
+      if (!isAuthRequest) {
+        localStorage.removeItem("token");
+        toast.error("Session expired. Please login again.");
+      } else {
+        toast.error(message);
+      }
     } else {
-      const message = error.response?.data?.message || "Something went wrong";
       toast.error(message);
     }
+
     return Promise.reject(error);
   },
 );
