@@ -16,6 +16,7 @@ import NotFound from "./Pages/NotFound/NotFound";
 import Notifications from "./Pages/Notifications/Notifications";
 import PostDetails from "./Pages/PostDetails/PostDetails";
 import Profile from "./Pages/Profile/Profile";
+import SuggestedFriends from "./Pages/SuggestedFriends/SuggestedFriendsPage";
 const App = () => {
   const routes = createBrowserRouter([
     {
@@ -36,6 +37,14 @@ const App = () => {
           element: (
             <PostsGuard>
               <Feed />
+            </PostsGuard>
+          ),
+        },
+        {
+          path: "/suggestions",
+          element: (
+            <PostsGuard>
+              <SuggestedFriends />
             </PostsGuard>
           ),
         },
@@ -96,7 +105,7 @@ const App = () => {
           ),
         },
         {
-          path: "/post-details/:id",
+          path: "/posts/:id",
           element: (
             <PostsGuard>
               <PostDetails />
