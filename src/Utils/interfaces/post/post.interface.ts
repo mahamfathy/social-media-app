@@ -20,4 +20,4 @@ export interface Post {
   bookmarked?: boolean;
 }
 
-export type IPost = ApiResponse<{ posts: Post[] }>;
+export type IPost = ApiResponse<{ posts?: Post[]; post?: Post }>;
