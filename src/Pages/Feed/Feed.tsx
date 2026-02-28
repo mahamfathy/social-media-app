@@ -1,6 +1,8 @@
 import AddPost from "@/Components/AddPost/AddPost";
 import PostSkeleton from "@/Components/PostSkeleton/PostSkeleton";
 import SinglePost from "@/Components/SinglePost/SinglePost";
+import SuggestedFriends from "@/Components/SuggestedFriends/SuggestedFriends";
+import SuggestedFriendsSidebar from "@/Components/SuggestedFriendsSidebar/SuggestedFriendsSidebar";
 import { PostService } from "@/services/Post.service";
 import { useAuth } from "@/Utils/custom-hooks/useAuth/useAuth";
 import { usePost } from "@/Utils/custom-hooks/usePost/usePost";
@@ -12,6 +14,7 @@ type PostTab = "feed" | "community" | "saved" | "my posts";
 const Feed = () => {
   const { userData } = useAuth();
   const [activeTab, setActiveTab] = useState<PostTab>("feed");
+
   const myId = userData?.data?.user?._id;
   const getFetchFn = () => {
     switch (activeTab) {
@@ -30,8 +33,10 @@ const Feed = () => {
     getFetchFn(),
     !!myId,
   );
-  const posts = data?.data?.posts || data?.data?.bookmarks || [];
-
+  const posts =
+    activeTab === "saved"
+      ? [...(data?.data?.bookmarks || [])].reverse()
+      : data?.data?.posts || [];
   const getTabClass = (tab: PostTab) =>
     `flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left text-sm font-bold transition ${
       activeTab === tab
@@ -229,7 +234,7 @@ const Feed = () => {
               </button>
             </div>
           </div>
-
+          <SuggestedFriends />
           <AddPost
             name={userData?.data?.user.name || null}
             photo={userData?.data?.user.photo || null}
@@ -262,53 +267,7 @@ const Feed = () => {
           </div>
         </section>
 
-        <aside className="hidden h-fit xl:sticky xl:top-21 xl:block">
-          <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-            <div className="mb-3 flex items-center justify-between gap-2">
-              <div className="flex items-center gap-2">
-                <h3 className="text-base font-extrabold text-slate-900">
-                  Suggested Friends
-                </h3>
-              </div>
-              <span className="rounded-full bg-slate-100 px-2 py-0.5 text-xs font-bold text-slate-600">
-                5
-              </span>
-            </div>
-
-            <div className="space-y-3">
-              {[1, 2, 3].map((item) => (
-                <div
-                  key={item}
-                  className="rounded-xl border border-slate-200 p-2.5"
-                >
-                  <div className="flex items-center justify-between gap-2">
-                    <div className="flex min-w-0 items-center gap-2">
-                      <img
-                        alt="user"
-                        className="h-10 w-10 rounded-full object-cover"
-                        src="https://pub-3cba56bacf9f4965bbb0989e07dada12.r2.dev/linkedPosts/default-profile.png"
-                      />
-                      <div className="min-w-0">
-                        <p className="truncate text-sm font-bold text-slate-900">
-                          User {item}
-                        </p>
-                        <p className="truncate text-xs text-slate-500">
-                          Route User
-                        </p>
-                      </div>
-                    </div>
-                    <button className="rounded-full px-3 py-1.5 text-xs font-bold bg-[#e7f3ff] text-[#1877f2] hover:bg-[#d8ebff]">
-                      Follow
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-            <button className="mt-3 w-full rounded-xl border border-slate-200 bg-slate-50 py-2 text-sm font-bold text-slate-700 hover:bg-slate-100">
-              View more
-            </button>
-          </div>
-        </aside>
+        <SuggestedFriendsSidebar />
       </div>
     </>
   );
