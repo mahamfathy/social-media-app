@@ -13,6 +13,10 @@ export const PostService = {
     const { data } = await axiosInstance.get<IPost>("/posts");
     return data;
   },
+  getSinglePost: async (postId: string) => {
+    const { data } = await axiosInstance.get<IPost>(`/posts/${postId}`);
+    return data;
+  },
   addPost: async (formData: FormData) => {
     const { data } = await axiosInstance.post("/posts", formData);
     return data;
