@@ -1,8 +1,8 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, type QueryKey } from "@tanstack/react-query";
 
-export const usePost = (
-  key: any[],
-  fetchFn: () => Promise<any>,
+export const usePost = <T>(
+  key: QueryKey,
+  fetchFn: () => Promise<T>,
   enabled: boolean = true,
 ) => {
   return useQuery({
