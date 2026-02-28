@@ -1,9 +1,10 @@
 import { useAuth } from "@/Utils/custom-hooks/useAuth/useAuth";
 import usePostActions from "@/Utils/custom-hooks/usePostActions/usePostActions";
 import type { Post } from "@/Utils/interfaces/post/post.interface";
+import { formatDistanceToNow } from "date-fns";
 import { Loader2, ThumbsUp } from "lucide-react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import DropdownPost from "../DropdownPost/DropdownPost";
 
 const SinglePost = ({ post, activeTab }: { post: Post; activeTab: string }) => {
@@ -19,12 +20,8 @@ const SinglePost = ({ post, activeTab }: { post: Post; activeTab: string }) => {
   const [localIsLiked, setLocalIsLiked] = useState(
     !!post.likes?.includes(userData?.data?.user?._id || ""),
   );
-
-  const { handleUpdate, isUpdating, handleLike } = usePostActions(
-    post._id,
-    activeTab,
-  );
-
+  const navigate = useNavigate();
+  const { handleUpdate, isUpdating, handleLike } = usePostActions(post._id);
   const handleSaveEdit = async () => {
     const trimmedValue = editValue?.trim() || "";
     if (trimmedValue === post.body) {
@@ -90,7 +87,13 @@ const SinglePost = ({ post, activeTab }: { post: Post; activeTab: string }) => {
               {post.user.name}
             </Link>
             <div className="flex items-center gap-1 text-xs text-slate-500">
-              <span>{post.createdAt}</span>
+              <span>
+                {post.createdAt
+                  ? formatDistanceToNow(new Date(post.createdAt), {
+                      addSuffix: true,
+                    })
+                  : "just now"}
+              </span>
               <span className="mx-0.5">·</span>
               <div className="flex items-center gap-1">
                 <span className="capitalize">{post.privacy}</span>
@@ -179,8 +182,42 @@ const SinglePost = ({ post, activeTab }: { post: Post; activeTab: string }) => {
             </span>
             <span className="font-medium">{localLikes} likes</span>
           </div>
-          <div className="text-slate-500">
-            {post.commentsCount} comments · {post.sharesCount} shares
+          <div className="flex flex-wrap items-center gap-2 text-xs text-slate-500 sm:gap-3 sm:text-sm">
+            <span className="inline-flex items-center gap-1">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width={13}
+                height={13}
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="lucide lucide-repeat2"
+                aria-hidden="true"
+              >
+                <path d="m2 9 3-3 3 3" />
+                <path d="M13 18H7a2 2 0 0 1-2-2V6" />
+                <path d="m22 15-3 3-3-3" />
+                <path d="M11 6h6a2 2 0 0 1 2 2v10" />
+              </svg>
+              {post.sharesCount || 0} shares
+            </span>
+
+            <span
+              className="h-1 w-1 rounded-full bg-slate-300"
+              aria-hidden="true"
+            ></span>
+
+            <span>{post.commentsCount || 0} comments</span>
+
+            <button
+              onClick={() => navigate(`/posts/${post._id}`)}
+              className="ml-auto rounded-md px-2 py-1 text-xs font-bold text-[#1877f2] transition hover:bg-[#e7f3ff]"
+            >
+              View details
+            </button>
           </div>
         </div>
 
