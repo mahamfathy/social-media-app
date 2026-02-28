@@ -6,7 +6,7 @@ import { useProfile } from "@/Utils/custom-hooks/useProfile/useProfile";
 import { useSavedPosts } from "@/Utils/custom-hooks/useSavedPosts/useSavedPosts";
 import type { Post } from "@/Utils/interfaces/post/post.interface";
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const Profile = () => {
   const { id } = useParams<{ id: string }>();
@@ -23,7 +23,7 @@ const Profile = () => {
   );
 
   const { data: savedData, isLoading: savedLoading } = useSavedPosts(!id);
-
+  const navigate = useNavigate();
   const currentPosts =
     activeTab === "my posts"
       ? postsData?.data?.posts || []
@@ -31,7 +31,29 @@ const Profile = () => {
 
   const currentLoading = activeTab === "my posts" ? postsLoading : savedLoading;
   return (
-    <>
+    <div className="space-y-4 ">
+      <button
+        onClick={() => navigate(-1)}
+        className="inline-flex items-center mt-4 ms-4 mb-0 gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-bold text-slate-700 transition hover:bg-slate-50"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width={16}
+          height={16}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="lucide lucide-arrow-left"
+          aria-hidden="true"
+        >
+          <path d="m12 19-7-7 7-7" />
+          <path d="M19 12H5" />
+        </svg>
+        Back
+      </button>
       <div className="mx-auto max-w-7xl px-3 py-3.5 space-y-5 sm:space-y-6">
         <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_2px_10px_rgba(15,23,42,.06)] sm:rounded-[28px]">
           <div
@@ -202,7 +224,7 @@ const Profile = () => {
                         {currentUser?.name}
                       </h2>
                       <p className="mt-1 text-lg font-semibold text-slate-500 sm:text-xl">
-                        @{currentUser?.username}
+                        @{currentUser?.username || "user" + currentUser?._id}
                       </p>
                       <div className="mt-3 inline-flex items-center gap-2 rounded-full border border-[#d7e7ff] bg-[#eef6ff] px-3 py-1 text-xs font-bold text-[#0b57d0]">
                         <svg
@@ -221,7 +243,7 @@ const Profile = () => {
                           <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
                           <circle cx={9} cy={7} r={4} />
                         </svg>
-                        Route Posts member
+                        SocialHub member
                       </div>
                     </div>
                   </div>
@@ -299,7 +321,7 @@ const Profile = () => {
                         <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
                         <circle cx={9} cy={7} r={4} />
                       </svg>
-                      Active on Route Posts
+                      Active on SocialHub Posts
                     </p>
                   </div>
                 </div>
@@ -409,7 +431,7 @@ const Profile = () => {
           </div>
         </section>
       </div>
-    </>
+    </div>
   );
 };
 
