@@ -25,4 +25,12 @@ export const AuthService = {
     );
     return data;
   },
+  getSuggestions: async (limit = 20, page = 1, search: string) => {
+    const endpoint = search ? "/users/search" : "/users/suggestions";
+
+    const { data } = await axiosInstance.get(
+      `${endpoint}?page=${page}&limit=${limit}&q=${search}`,
+    );
+    return data;
+  },
 };
