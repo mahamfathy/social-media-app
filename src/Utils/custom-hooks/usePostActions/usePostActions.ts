@@ -8,6 +8,7 @@ const usePostActions = (postId: string) => {
 
   const likeMutation = useMutation({
     mutationFn: () => PostService.toggleLike(postId),
+    retry: false,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["posts"] });
       toast.success("Post like updated");
@@ -16,15 +17,21 @@ const usePostActions = (postId: string) => {
 
   const saveMutation = useMutation({
     mutationFn: () => PostService.toggleBookmark(postId),
+    retry: false,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["auth-user"] });
       queryClient.invalidateQueries({ queryKey: ["posts"] });
       toast.success("Bookmark updated");
     },
+
+    onError: (error: any) => {
+      toast.error(error?.response?.data?.message || "Something went wrong");
+    },
   });
 
   const deleteMutation = useMutation({
     mutationFn: () => PostService.deletePost(postId),
+    retry: false,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["posts"] });
       toast.success("Post deleted");
@@ -34,6 +41,7 @@ const usePostActions = (postId: string) => {
   const updateMutation = useMutation({
     mutationFn: (newContent: PostSchema) =>
       PostService.updatePost(postId, newContent),
+    retry: false,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["posts"] });
       toast.success("Post updated");
