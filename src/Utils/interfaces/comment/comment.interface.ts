@@ -1,17 +1,13 @@
 import type { ApiResponse } from "../api.interface";
 import type { User } from "../post/post-like.interface";
 
-export interface CommentPayload {
-  comment: Comment;
-}
-
 export interface Comment {
   _id: string;
   content: string;
   image?: string;
   commentCreator: User;
   post: string;
-  parentComment: any;
+  parentComment: string | null;
   likes: string[];
   createdAt: string;
   likesCount?: number;
@@ -19,5 +15,5 @@ export interface Comment {
   id?: string;
   repliesCount?: number;
 }
-export type IComment = ApiResponse<Comment>;
-export type IcommentReplies = ApiResponse<Comment[]>;
+
+export type IComment = ApiResponse<{ comments?: Comment[]; comment?: Comment }>;
