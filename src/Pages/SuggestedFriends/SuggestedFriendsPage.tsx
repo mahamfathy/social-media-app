@@ -1,7 +1,7 @@
 import SuggestedUserCard from "@/Components/SuggestedUserCard/SuggestedUserCard";
 import SuggestedUserSkeleton from "@/Components/SuggestedUserSkeleton/SuggestedUserSkeleton";
 import { useSuggestions } from "@/Utils/custom-hooks/useSuggestions/useSuggestions";
-import type { SuggestedUser } from "@/Utils/interfaces/post/suggested-user.interface"; // سيبيها زي ما هي
+import type { SuggestedUser } from "@/Utils/interfaces/post/suggested-user.interface";
 import { ArrowLeft, Loader2, Search } from "lucide-react";
 import { useDeferredValue, useState } from "react";
 import { useNavigate } from "react-router-dom";
