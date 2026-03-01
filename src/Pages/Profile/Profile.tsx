@@ -421,7 +421,7 @@ const Profile = () => {
               </div>
             ) : currentPosts.length > 0 ? (
               currentPosts.map((post: Post) => (
-                <SinglePost key={post._id} post={post} activeTab={""} />
+                <SinglePost key={post._id} post={post} />
               ))
             ) : (
               <div className="p-10 text-center bg-white rounded-2xl border border-dashed text-slate-400">
