@@ -33,10 +33,10 @@ export const CommentService = {
     return data;
   },
 
-  addReply: async (postId: string, commentId: string, content: string) => {
+  addReply: async (postId: string, commentId: string, formData: FormData) => {
     const { data } = await axiosInstance.post(
       `/posts/${postId}/comments/${commentId}/replies`,
-      { content },
+      formData,
     );
     return data;
   },
