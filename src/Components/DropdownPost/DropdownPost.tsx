@@ -1,6 +1,6 @@
 import { useAuth } from "@/Utils/custom-hooks/useAuth/useAuth";
+import useCommentReplyActions from "@/Utils/custom-hooks/useCommentReplyAction/useCommentReplyAction";
 import usePostActions from "@/Utils/custom-hooks/usePostActions/usePostActions";
-import type { Post } from "@/Utils/interfaces/post/post.interface";
 import {
   Bookmark,
   Loader2,
@@ -17,44 +17,77 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 
-interface DropdownPostProps {
-  post: Post;
-  activeTab: string;
+interface DropdownActionProps {
+  id: string;
+  postId?: string;
+  type: "post" | "comment" | "reply";
+  ownerId: string;
   onEdit: () => void;
-  localIsSaved: boolean;
-  setLocalIsSaved: React.Dispatch<React.SetStateAction<boolean>>;
+  onDelete?: () => void;
+  localIsSaved?: boolean;
+  setLocalIsSaved?: React.Dispatch<React.SetStateAction<boolean>>;
+  activeTab?: string;
 }
 
-const DropdownPost = ({
-  post,
+const DropdownAction = ({
+  id,
+  postId,
+  type,
+  onDelete,
+  ownerId,
   onEdit,
   localIsSaved,
   setLocalIsSaved,
-}: DropdownPostProps) => {
+}: DropdownActionProps) => {
   const { userData } = useAuth();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const { handleSave, handleDelete, isSaving, isDeleting } = usePostActions(
-    post._id,
-  );
+  const postActions = usePostActions(id);
+  const commentActions = useCommentReplyActions(postId || "");
 
-  const myPost = userData?.data?.user?._id === post?.user?._id;
-
-  const onSaveClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    const newStatus = !localIsSaved;
-
-    setLocalIsSaved(newStatus);
-
-    handleSave(undefined, {
-      onError: () => {
-        setLocalIsSaved(!newStatus);
-      },
-    });
+  const isMyItem = userData?.data?.user?._id === ownerId;
+  const getActions = () => {
+    switch (type) {
+      case "post":
+        return {
+          handleDelete: postActions.handleDelete,
+          isDeleting: postActions.isDeleting,
+        };
+      case "comment":
+        return {
+          handleDelete: () => commentActions.handleDeleteComment(id),
+          isDeleting: commentActions.isDeletingComment,
+        };
+      case "reply":
+        return {
+          handleDelete: () => commentActions.handleDeleteReply(id),
+          isDeleting: commentActions.isDeletingReply,
+        };
+      default:
+        return { handleDelete: () => {}, isDeleting: false };
+    }
   };
+
+  const { handleDelete, isDeleting } = getActions();
+
   const confirmDelete = async () => {
-    handleDelete();
+    if (onDelete) {
+      onDelete();
+    } else {
+      handleDelete();
+    }
     setShowDeleteModal(false);
   };
+  const onSaveClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (type !== "post" || !setLocalIsSaved) return;
+
+    const newStatus = !localIsSaved;
+    setLocalIsSaved(newStatus);
+    postActions.handleSave(undefined, {
+      onError: () => setLocalIsSaved(!newStatus),
+    });
+  };
+
   return (
     <>
       <DropdownMenu>
@@ -75,58 +108,69 @@ const DropdownPost = ({
           align="end"
           className="w-44 rounded-xl shadow-lg border-slate-200"
         >
-          <DropdownMenuItem
-            disabled={isSaving}
-            onClick={onSaveClick}
-            className="flex items-center gap-2 px-3 py-2 font-semibold text-slate-700 cursor-pointer disabled:opacity-50"
-          >
-            {isSaving ? (
-              <>
-                <Loader2 size={15} className="animate-spin text-[#1f6fe5]" />
-                <span className="text-[#1f6fe5]">Saving...</span>
-              </>
-            ) : localIsSaved ? (
-              <>
-                <Bookmark size={15} fill="#1f6fe5" className="text-[#1f6fe5]" />
-                <span className="text-[#1f6fe5]">Unsave post</span>
-              </>
-            ) : (
-              <>
-                <Bookmark size={15} />
-                <span>Save post</span>
-              </>
-            )}
-          </DropdownMenuItem>
+          {type === "post" && (
+            <DropdownMenuItem
+              disabled={postActions.isSaving}
+              onClick={onSaveClick}
+              className="flex items-center gap-2 px-3 py-2 font-semibold text-slate-700 cursor-pointer disabled:opacity-50"
+            >
+              {postActions.isSaving ? (
+                <>
+                  {" "}
+                  <Loader2
+                    size={15}
+                    className="animate-spin text-[#1f6fe5]"
+                  />{" "}
+                  <span className="text-[#1f6fe5]">Saving...</span>{" "}
+                </>
+              ) : localIsSaved ? (
+                <>
+                  {" "}
+                  <Bookmark
+                    size={15}
+                    fill="#1f6fe5"
+                    className="text-[#1f6fe5]"
+                  />{" "}
+                  <span className="text-[#1f6fe5]">Unsave</span>{" "}
+                </>
+              ) : (
+                <>
+                  {" "}
+                  <Bookmark size={15} /> <span>Save post</span>{" "}
+                </>
+              )}
+            </DropdownMenuItem>
+          )}
 
-          {myPost && (
+          {isMyItem && (
             <>
               <DropdownMenuItem
                 onClick={onEdit}
                 className="flex items-center gap-2 px-3 py-2 font-semibold text-slate-700 cursor-pointer"
               >
-                <Pencil size={15} /> Edit post
+                <Pencil size={15} /> Edit {type}
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => setShowDeleteModal(true)}
                 className="flex items-center gap-2 px-3 py-2 font-semibold text-rose-600 cursor-pointer focus:text-rose-600 focus:bg-rose-50"
               >
-                <Trash2 size={15} className="text-rose-600" />
-                Delete post
+                <Trash2 size={15} /> Delete {type}
               </DropdownMenuItem>
             </>
           )}
         </DropdownMenuContent>
       </DropdownMenu>
+
       {showDeleteModal && (
         <DeletePostComment
           setShowDeleteModal={setShowDeleteModal}
           confirmDelete={confirmDelete}
           isDeleting={isDeleting}
-          type="post"
+          type={type}
         />
       )}
     </>
   );
 };
 
-export default DropdownPost;
+export default DropdownAction;
