@@ -2,9 +2,10 @@ import { PostService } from "@/services/Post.service";
 import { useCustomForm } from "@/Utils/custom-hooks/useCustomForm/useCustomForm";
 import { postSchema, type PostSchema } from "@/Utils/schemas/Post/Post.schema";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import EmojiPicker, { type EmojiClickData } from "emoji-picker-react";
+import type { EmojiClickData } from "emoji-picker-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import Emojis from "../Emojis/Emojis";
 
 const AddPost = ({
   name,
@@ -131,28 +132,10 @@ const AddPost = ({
               </button>
 
               {showEmoji && (
-                <div className="absolute top-full left-0 mt-2 z-50 shadow-2xl border rounded-xl bg-white overflow-hidden sm:left-auto sm:right-0">
-                  <div className="flex justify-between items-center p-2 border-b bg-slate-50">
-                    <span className="text-xs font-bold text-slate-400 ml-2">
-                      Emojis
-                    </span>
-                    <button
-                      type="button"
-                      onClick={() => setShowEmoji(false)}
-                      className="text-xs bg-slate-200 hover:bg-slate-300 px-2 py-1 rounded text-slate-700 transition"
-                    >
-                      Close ✖
-                    </button>
-                  </div>
-                  <EmojiPicker
-                    onEmojiClick={onEmojiClick}
-                    previewConfig={{ showPreview: false }}
-                    width={300}
-                    height={350}
-                    searchDisabled={false}
-                    skinTonesDisabled
-                  />
-                </div>
+                <Emojis
+                  setShowEmoji={setShowEmoji}
+                  onEmojiClick={onEmojiClick}
+                />
               )}
             </div>
           </div>

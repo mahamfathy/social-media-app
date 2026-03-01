@@ -16,6 +16,7 @@ axiosInstance.interceptors.request.use(
   },
   (error) => Promise.reject(error),
 );
+
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -28,6 +29,7 @@ axiosInstance.interceptors.response.use(
         url.includes("/signin") ||
         url.includes("/signup") ||
         url.includes("/change-password");
+
       if (!isAuthRequest) {
         localStorage.removeItem("token");
         toast.error("Session expired. Please login again.");
