@@ -30,7 +30,7 @@ const CommentCard = ({ comment, userData, postId }: CommentCardProps) => {
   const [editValue, setEditValue] = useState(comment.content || "");
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [localIsLiked, setLocalIsLiked] = useState(
-    comment.likes?.includes(userData?._id),
+    comment.likes?.includes(userData?._id) || false,
   );
   const [localLikesCount, setLocalLikesCount] = useState(
     comment.likesCount || 0,
@@ -177,6 +177,7 @@ const CommentCard = ({ comment, userData, postId }: CommentCardProps) => {
           </div>
         </div>
       </div>
+
       {showReplies && (
         <div className="relative mt-2 ml-5 pl-4 border-l-2 border-slate-100">
           <div className="space-y-3 mb-3">
@@ -258,7 +259,7 @@ const CommentCard = ({ comment, userData, postId }: CommentCardProps) => {
                           setEditingReplyId(reply._id);
                           setEditReplyValue(reply.content);
                         }}
-                        onDelete={() => onDeleteReplyClick(reply._id)} // استخدام onDeleteReplyClick هنا
+                        onDelete={() => onDeleteReplyClick(reply._id)}
                       />
                     </div>
                   </div>
@@ -268,6 +269,7 @@ const CommentCard = ({ comment, userData, postId }: CommentCardProps) => {
               <p className="text-xs text-slate-500">No replies yet.</p>
             )}
           </div>
+
           <div className="mt-2 flex items-center gap-2">
             <img
               src={
