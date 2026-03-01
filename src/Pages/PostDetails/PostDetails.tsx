@@ -3,6 +3,7 @@ import { PostService } from "@/services/Post.service";
 import { usePost } from "@/Utils/custom-hooks/usePost/usePost";
 import { Loader2 } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
+import NotFound from "../NotFound/NotFound";
 
 const PostDetails = () => {
   const navigate = useNavigate();
@@ -23,17 +24,7 @@ const PostDetails = () => {
   }
 
   if (isError || !post) {
-    return (
-      <div className="mt-10 text-center">
-        <p className="text-rose-500 font-bold">Post not found!</p>
-        <button
-          onClick={() => navigate(-1)}
-          className="mt-4 text-blue-500 underline"
-        >
-          Go Back
-        </button>
-      </div>
-    );
+    return <NotFound />;
   }
 
   return (
