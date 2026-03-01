@@ -14,6 +14,7 @@ import {
   Share2,
   Smile,
   ThumbsUp,
+  X,
 } from "lucide-react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -21,7 +22,13 @@ import CommentCard from "../CommentCard/CommentCard";
 import DropdownPost from "../DropdownPost/DropdownPost";
 import Emojis from "../Emojis/Emojis";
 
-const SinglePost = ({ post }: { post: Post }) => {
+// 1. تعريف الـ Props وحل مشكلة الـ activeTab
+interface SinglePostProps {
+  post: Post;
+  activeTab?: string; // أضفنا الـ Prop هنا عشان الـ TS ميزعلش
+}
+
+const SinglePost = ({ post, activeTab }: SinglePostProps) => {
   const { userData } = useAuth();
   const [localIsSaved, setLocalIsSaved] = useState(
     !!userData?.data?.user?.bookmarks?.includes(post._id),
@@ -38,6 +45,7 @@ const SinglePost = ({ post }: { post: Post }) => {
   const [showComments, setShowComments] = useState(false);
   const navigate = useNavigate();
   const { isUpdating, handleLike, handleUpdate } = usePostActions(post._id);
+
   const {
     commentText,
     setCommentText,
@@ -51,9 +59,11 @@ const SinglePost = ({ post }: { post: Post }) => {
     fetchNextPage,
     isFetchingNextPage,
   } = useComment(post._id, showComments);
+
   const onEmojiClick = (emojiData: { emoji: string }) => {
     setCommentText((prev) => prev + emojiData.emoji);
   };
+
   const onSaveEdit = () => {
     if (editValue.trim() === post.body) {
       setIsEditing(false);
@@ -88,7 +98,8 @@ const SinglePost = ({ post }: { post: Post }) => {
   return (
     <article className="overflow-visible rounded-xl border border-slate-200 bg-white shadow-sm">
       <div className="p-4 pb-0">
-        <div className="flex items-center gap-3">
+        {/* 2. تحسين منطقة الـ Header عشان الـ Dropdown */}
+        <div className="relative group/post-header flex items-center gap-3">
           <Link className="shrink-0" to={`/profile/${post.user._id}`}>
             <img
               alt={post.user.name}
@@ -110,7 +121,7 @@ const SinglePost = ({ post }: { post: Post }) => {
               <span>
                 {post.createdAt
                   ? formatDistanceToNow(new Date(post.createdAt), {
-                      addSuffix: false,
+                      addSuffix: true,
                     })
                   : "just now"}
               </span>
@@ -120,14 +131,18 @@ const SinglePost = ({ post }: { post: Post }) => {
               </button>
             </div>
           </div>
-          <DropdownPost
-            id={post._id}
-            type="post"
-            ownerId={post.user._id}
-            localIsSaved={localIsSaved}
-            setLocalIsSaved={setLocalIsSaved}
-            onEdit={() => setIsEditing(true)}
-          />
+
+          {/* الـ Dropdown هيظهر هنا بشكل أوضح */}
+          <div className="shrink-0">
+            <DropdownPost
+              id={post._id}
+              type="post"
+              ownerId={post.user._id}
+              localIsSaved={localIsSaved}
+              setLocalIsSaved={setLocalIsSaved}
+              onEdit={() => setIsEditing(true)}
+            />
+          </div>
         </div>
 
         <div className="mt-3 text-sm leading-relaxed text-slate-800">
@@ -172,6 +187,7 @@ const SinglePost = ({ post }: { post: Post }) => {
         </div>
       )}
 
+      {/* Stats and Actions section */}
       <div className="px-4 py-3 text-sm text-slate-500">
         <div className="flex items-center justify-between border-b border-slate-100 pb-3">
           <div className="flex items-center gap-1.5">
@@ -205,7 +221,7 @@ const SinglePost = ({ post }: { post: Post }) => {
           </button>
           <button
             onClick={() => setShowComments(!showComments)}
-            className="flex items-center justify-center gap-2 rounded-md p-2 font-semibold hover:bg-slate-100"
+            className={`flex items-center justify-center gap-2 rounded-md p-2 font-semibold transition ${showComments ? "bg-slate-100 text-[#1877f2]" : "hover:bg-slate-100"}`}
           >
             <MessageCircle size={18} /> <span>Comment</span>
           </button>
@@ -214,68 +230,15 @@ const SinglePost = ({ post }: { post: Post }) => {
           </button>
         </div>
       </div>
-      {!showComments && post.topComment && (
-        <div className="mx-4 mb-4 rounded-2xl border border-slate-200 bg-slate-50 p-3">
-          <p className="mb-2 text-[11px] font-bold uppercase tracking-wide text-slate-500">
-            Top Comment
-          </p>
-          <div className="flex items-start gap-2">
-            <img
-              alt={post.topComment?.commentCreator?.name}
-              className="h-8 w-8 rounded-full object-cover"
-              src={
-                post.topComment?.commentCreator?.photo ||
-                "https://pub-3cba56bacf9f4965bbb0989e07dada12.r2.dev/linkedPosts/default-profile.png"
-              }
-            />
-            <div className="min-w-0 flex-1 rounded-2xl bg-white px-3 py-2">
-              <p className="truncate text-xs font-bold text-slate-900">
-                {post.topComment?.commentCreator?.name || "Anonymous"}
-              </p>
-              <p className="truncate text-xs font-light text-slate-700">
-                @{post.topComment?.commentCreator?.username || "Anonymous"}
-              </p>
-              <p className="mt-0.5 whitespace-pre-wrap text-sm text-slate-700">
-                {post.topComment?.content || "No comment content available"}
-              </p>
-              {post.topComment?.image && (
-                <img
-                  alt={post.topComment?.content}
-                  className="mt-2 max-h-44 w-full rounded-lg object-cover"
-                  src={post?.topComment?.image}
-                />
-              )}
-            </div>
-          </div>
-          <button
-            onClick={() => setShowComments(!showComments)}
-            className="mt-2 text-xs font-bold text-[#1877f2] hover:underline"
-          >
-            View all comments
-          </button>
-        </div>
-      )}
+
+      {/* Comments Section */}
       {showComments && (
         <div className="border-t border-slate-200 bg-[#f7f8fa] px-4 py-4">
-          <div className="mb-3 flex flex-wrap items-center justify-between gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2">
-            <div className="flex items-center gap-2">
-              <p className="text-sm font-extrabold tracking-wide text-slate-700">
-                Comments
-              </p>
-              <span className="rounded-full bg-[#e7f3ff] px-2 py-0.5 text-[11px] font-bold text-[#1877f2]">
-                {post.commentsCount}
-              </span>
-            </div>
-            <select className="rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1.5 text-xs font-bold text-slate-700 outline-none focus:ring-2 focus:ring-[#1877f2]/20">
-              <option value="relevant">Most relevant</option>
-              <option value="newest">Newest</option>
-            </select>
-          </div>
-
+          {/* Comments list rendering logic remains same */}
           <div className="space-y-4">
             {isLoadingComments ? (
-              <div className="flex flex-col items-center justify-center py-10">
-                <Loader2 className="animate-spin text-[#1877f2]" size={30} />
+              <div className="flex flex-col items-center justify-center py-6">
+                <Loader2 className="animate-spin text-[#1877f2]" size={24} />
               </div>
             ) : allComments.length > 0 ? (
               allComments.map((comment) => (
@@ -287,62 +250,60 @@ const SinglePost = ({ post }: { post: Post }) => {
                 />
               ))
             ) : (
-              <p className="py-4 text-center text-sm text-slate-500">
+              <p className="py-2 text-center text-sm text-slate-500">
                 No comments yet.
               </p>
             )}
 
             {hasNextPage && (
-              <div className="pt-2 text-center">
-                <button
-                  onClick={() => fetchNextPage()}
-                  disabled={isFetchingNextPage}
-                  className="rounded-full border border-slate-300 bg-white px-4 py-2 text-xs font-bold text-slate-700 transition hover:bg-slate-100 disabled:opacity-60 flex items-center gap-2 mx-auto"
-                >
-                  {isFetchingNextPage && (
-                    <Loader2 size={14} className="animate-spin" />
-                  )}
-                  View more comments
-                </button>
-              </div>
+              <button
+                onClick={() => fetchNextPage()}
+                disabled={isFetchingNextPage}
+                className="w-full text-xs font-bold text-slate-500 hover:underline py-2"
+              >
+                {isFetchingNextPage ? "Loading..." : "View more comments"}
+              </button>
             )}
           </div>
 
+          {/* New Comment Input */}
           <div className="mt-4 flex items-start gap-2">
             <img
               alt="Me"
-              className="h-9 w-9 rounded-full object-cover"
-              src={userData?.data?.user?.photo || "default-path.png"}
+              className="h-8 w-8 rounded-full object-cover shrink-0"
+              src={
+                userData?.data?.user?.photo ||
+                "https://pub-3cba56bacf9f4965bbb0989e07dada12.r2.dev/linkedPosts/default-profile.png"
+              }
             />
-
-            <div className="w-full rounded-2xl border border-slate-200 bg-[#f0f2f5] px-2.5 py-1.5 focus-within:bg-white focus-within:border-[#c7dafc]">
+            <div className="flex-1 rounded-2xl border border-slate-200 bg-[#f0f2f5] px-3 py-1.5 focus-within:bg-white focus-within:border-[#c7dafc] transition-all">
               <textarea
                 value={commentText}
                 onChange={(e) => setCommentText(e.target.value)}
-                placeholder={`Comment as ${userData?.data?.user?.name}...`}
+                placeholder="Write a comment..."
                 rows={1}
-                className="w-full min-h-10 resize-none bg-transparent px-2 py-1.5 text-sm outline-none"
+                className="w-full min-h-8 resize-none bg-transparent py-1 text-sm outline-none"
               />
 
               {selectedImage && (
                 <div className="relative mt-2 inline-block">
                   <img
                     src={URL.createObjectURL(selectedImage)}
-                    className="h-20 w-20 rounded-lg object-cover border"
+                    className="h-16 w-16 rounded-lg object-cover border"
                     alt="preview"
                   />
                   <button
                     onClick={() => setSelectedImage(null)}
-                    className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1"
+                    className="absolute -top-2 -right-2 bg-slate-800 text-white rounded-full p-0.5 hover:bg-red-500"
                   >
-                    <Loader2 size={10} className="rotate-45" />{" "}
+                    <X size={12} />
                   </button>
                 </div>
               )}
 
-              <div className="mt-1 flex items-center justify-between">
+              <div className="mt-1 flex items-center justify-between border-t border-slate-200/50 pt-1">
                 <div className="flex items-center gap-1">
-                  <label className="p-2 text-slate-500 hover:bg-slate-200 rounded-full cursor-pointer">
+                  <label className="p-1.5 text-slate-500 hover:bg-slate-200 rounded-full cursor-pointer transition">
                     <ImageIcon size={16} />
                     <input
                       type="file"
@@ -354,20 +315,14 @@ const SinglePost = ({ post }: { post: Post }) => {
                       }}
                     />
                   </label>
-
                   <div className="relative">
                     <button
                       type="button"
                       onClick={() => setShowEmoji(!showEmoji)}
-                      className={`p-2 rounded-full transition ${
-                        showEmoji
-                          ? "bg-blue-100 text-[#1877f2]"
-                          : "text-slate-500 hover:bg-slate-200"
-                      }`}
+                      className={`p-1.5 rounded-full transition ${showEmoji ? "text-[#1877f2] bg-blue-50" : "text-slate-500 hover:bg-slate-200"}`}
                     >
                       <Smile size={16} />
                     </button>
-
                     {showEmoji && (
                       <Emojis
                         setShowEmoji={setShowEmoji}
@@ -376,18 +331,17 @@ const SinglePost = ({ post }: { post: Post }) => {
                     )}
                   </div>
                 </div>
-
                 <button
                   onClick={handleAddComment}
                   disabled={
                     isAddingComment || (!commentText.trim() && !selectedImage)
                   }
-                  className="h-9 w-9 flex items-center justify-center rounded-full bg-[#1877f2] text-white disabled:opacity-50"
+                  className="text-[#1877f2] disabled:opacity-30 p-1.5 hover:bg-blue-50 rounded-full transition"
                 >
                   {isAddingComment ? (
-                    <Loader2 size={16} className="animate-spin" />
+                    <Loader2 size={18} className="animate-spin" />
                   ) : (
-                    <SendHorizontal size={16} />
+                    <SendHorizontal size={18} />
                   )}
                 </button>
               </div>
