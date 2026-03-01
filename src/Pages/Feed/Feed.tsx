@@ -249,7 +249,7 @@ const Feed = () => {
               </>
             ) : posts.length > 0 ? (
               posts.map((post: Post) => (
-                <SinglePost key={post._id} post={post} activeTab={activeTab} />
+                <SinglePost key={post._id} post={post} />
               ))
             ) : (
               <div className="text-center py-10 text-slate-400">
