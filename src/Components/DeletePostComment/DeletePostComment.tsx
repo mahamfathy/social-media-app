@@ -3,7 +3,7 @@ interface DeletePostCommentProps {
   setShowDeleteModal: (show: boolean) => void;
   confirmDelete: () => void;
   isDeleting: boolean;
-  type: "post" | "comment";
+  type: "post" | "comment" | "reply";
 }
 const DeletePostComment = ({
   setShowDeleteModal,
