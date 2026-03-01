@@ -1,4 +1,4 @@
-import { AuthService } from "@/services/Auth.service";
+import { AuthService } from "@/services/auth.service";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
 export const useSuggestions = (limit: number, search: string) => {

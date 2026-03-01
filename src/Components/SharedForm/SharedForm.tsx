@@ -18,7 +18,7 @@ import {
   VenusAndMars,
 } from "lucide-react";
 
-import { AuthService } from "@/services/Auth.service";
+import { AuthService } from "@/services/auth.service";
 import { useAuth } from "@/Utils/custom-hooks/useAuth/useAuth";
 import { useCustomForm } from "@/Utils/custom-hooks/useCustomForm/useCustomForm";
 import { Controller } from "react-hook-form";

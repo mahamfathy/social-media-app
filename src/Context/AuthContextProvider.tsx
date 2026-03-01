@@ -1,4 +1,4 @@
-import { AuthService } from "@/services/Auth.service";
+import { AuthService } from "@/services/auth.service";
 import type { IUserData } from "@/Utils/interfaces/user/user-data.interface";
 import { useEffect, useState, type ReactNode } from "react";
 import { AuthContext } from "./AuthContext";
