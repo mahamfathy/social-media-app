@@ -1,4 +1,4 @@
-import { CommentService } from "@/services/Comment.service";
+import { CommentService } from "@/services/comment.service";
 import type { IReply } from "@/Utils/interfaces/reply/reply.interface";
 import {
   useInfiniteQuery,
