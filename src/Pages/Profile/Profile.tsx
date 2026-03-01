@@ -1,5 +1,5 @@
 import SinglePost from "@/Components/SinglePost/SinglePost";
-import { PostService } from "@/services/Post.service";
+import { PostService } from "@/services/post.service";
 import { useAuth } from "@/Utils/custom-hooks/useAuth/useAuth";
 import { usePost } from "@/Utils/custom-hooks/usePost/usePost";
 import { useProfile } from "@/Utils/custom-hooks/useProfile/useProfile";

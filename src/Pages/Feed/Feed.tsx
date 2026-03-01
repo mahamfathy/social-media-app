@@ -3,7 +3,7 @@ import PostSkeleton from "@/Components/PostSkeleton/PostSkeleton";
 import SinglePost from "@/Components/SinglePost/SinglePost";
 import SuggestedFriends from "@/Components/SuggestedFriends/SuggestedFriends";
 import SuggestedFriendsSidebar from "@/Components/SuggestedFriendsSidebar/SuggestedFriendsSidebar";
-import { PostService } from "@/services/Post.service";
+import { PostService } from "@/services/post.service";
 import { useAuth } from "@/Utils/custom-hooks/useAuth/useAuth";
 import { usePost } from "@/Utils/custom-hooks/usePost/usePost";
 import type { Post } from "@/Utils/interfaces/post/post.interface";

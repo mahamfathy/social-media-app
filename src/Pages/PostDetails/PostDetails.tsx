@@ -1,5 +1,5 @@
 import SinglePost from "@/Components/SinglePost/SinglePost";
-import { PostService } from "@/services/Post.service";
+import { PostService } from "@/services/post.service";
 import { usePost } from "@/Utils/custom-hooks/usePost/usePost";
 import { Loader2 } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";

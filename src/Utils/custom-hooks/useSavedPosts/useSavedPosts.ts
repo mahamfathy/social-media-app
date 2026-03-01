@@ -1,4 +1,4 @@
-import { PostService } from "@/services/Post.service";
+import { PostService } from "@/services/post.service";
 import { useQuery } from "@tanstack/react-query";
 
 export const useSavedPosts = (enabled: boolean) => {

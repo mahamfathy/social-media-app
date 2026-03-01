@@ -1,4 +1,4 @@
-import { CommentService } from "@/services/Comment.service";
+import { CommentService } from "@/services/comment.service";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 

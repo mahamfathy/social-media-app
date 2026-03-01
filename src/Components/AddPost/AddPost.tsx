@@ -1,4 +1,4 @@
-import { PostService } from "@/services/Post.service";
+import { PostService } from "@/services/post.service";
 import { useCustomForm } from "@/Utils/custom-hooks/useCustomForm/useCustomForm";
 import { postSchema, type PostSchema } from "@/Utils/schemas/Post/Post.schema";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
